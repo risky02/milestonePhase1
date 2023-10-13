@@ -1,7 +1,7 @@
 package handler
 
 import (
-	"database/sql"
+	"project/config"
 	"project/entity"
 )
 
@@ -10,7 +10,8 @@ const (
     readProducts   = `SELECT ProductName, Category, Price FROM products`
 )
 
-func ReadProducts(db *sql.DB) ([]entity.Product, error) {
+func ReadProducts() ([]entity.Product, error) {
+	db, _ := config.InitDB()
     rows, err := db.Query(readProducts)
     if err != nil {
         return nil, err
@@ -33,7 +34,8 @@ func ReadProducts(db *sql.DB) ([]entity.Product, error) {
     return products, nil
 }
 
-func ReadCategories(db *sql.DB, category string) ([]entity.Product, error) {
+func ReadCategories(category string) ([]entity.Product, error) {
+	db, _ := config.InitDB()
     query := readCategories
     if category != "All" {
         query = readCategories + " WHERE Category = ?"
